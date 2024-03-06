@@ -1,0 +1,44 @@
+spring:
+
+  # Quartz Configuration
+  quartz:
+    properties:
+      org.quartz.scheduler:
+        instanceName: ${QUARTZ_SCHEDULER_INSTANCE_NAME:Scheduler}
+        instanceId: ${QUARTZ_SCHEDULER_INSTANCE_ID:AUTO}
+        makeSchedulerThreadDaemon: ${QUARTZ_SCHEDULER_MAKE_THREAD_DAEMON:true}
+      org.quartz.jobStore:
+        class: org.quartz.simpl.RAMJobStore
+#      org.quartz.jobStore:
+#        class: ${QUARTZ_JOBSTORE_CLASS:org.quartz.impl.jdbcjobstore.JobStoreTX}
+#        driverDelegateClass: ${QUARTZ_JOBSTORE_DRIVER:org.quartz.impl.jdbcjobstore.PostgreSQLDelegate}
+#        tablePrefix: ${QUARTZ_JOBSTORE_TABLE_PREFIX:qrtz_}
+#        isClustered: ${QUARTZ_JOBSTORE_ISCLUSTER:false}
+#        dataSource: ${QUARTZ_JOBSTORE_DATASOURCE:myDS}
+#        misfireThreshold: ${QUARTZ_JOBSTORE_MISFIRE_THRESHOLD:25000}
+      org.quartz.threadPool:
+        class: ${QUARTZ_THREADPOOL_CLASS:org.quartz.simpl.SimpleThreadPool}
+        makeThreadsDaemons: ${QUARTZ_THREADPOOL_DAEMON:true}
+        threadCount: ${QUARTZ_THREADPOOL_COUNT:20}
+        threadPriority: ${QUARTZ_THREADPOOL_PRIORITY:5}
+#    org.quartz.dataSource:
+#      myDS:
+#        driver: ${SPRING_DATASOURCE_DRIVER:org.postgresql.Driver}
+#        URL: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+#        user: ${SPRING_DATASOURCE_USERNAME:postgres}
+#        password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+#        maxConnections: ${SPRING_DATASOURCE_MAX_CONNECTION:20}
+#        validationQuery: ${SPRING_DATASOURCE_VALIDATION_QUERY:select 1}
+      org.quartz.plugin.jobInitializer:
+        class: org.quartz.plugins.xml.XMLSchedulingDataProcessorPlugin
+        fileNames: quartz_jobs.xml,jobs.xml
+        failOnFileNotFound: true
+        scanInterval: 10
+        wrapInUserTransaction: true
+      org.quartz.plugin.triggerHistory:
+        class: org.quartz.plugins.history.LoggingTriggerHistoryPlugin
+
+  # Jackson
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS=false:

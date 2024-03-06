@@ -1,0 +1,30 @@
+spring:
+
+  # Quartz Configuration
+  quartz:
+    properties:
+      org.quartz.scheduler:
+        instanceName: ${QUARTZ_SCHEDULER_INSTANCE_NAME:Scheduler}
+        instanceId: ${QUARTZ_SCHEDULER_INSTANCE_ID:AUTO}
+        makeSchedulerThreadDaemon: ${QUARTZ_SCHEDULER_MAKE_THREAD_DAEMON:true}
+      org.quartz.jobStore:
+        class: org.quartz.simpl.RAMJobStore
+      org.quartz.threadPool:
+        class: ${QUARTZ_THREADPOOL_CLASS:org.quartz.simpl.SimpleThreadPool}
+        makeThreadsDaemons: ${QUARTZ_THREADPOOL_DAEMON:true}
+        threadCount: ${QUARTZ_THREADPOOL_COUNT:20}
+        threadPriority: ${QUARTZ_THREADPOOL_PRIORITY:5}
+      org.quartz.plugin.jobInitializer:
+        class: org.quartz.plugins.xml.XMLSchedulingDataProcessorPlugin
+#        fileNames: quartz_jobs.xml,jobs.xml
+        fileNames: sample_jobs.xml
+        failOnFileNotFound: true
+        scanInterval: 10
+        wrapInUserTransaction: false
+      org.quartz.plugin.triggerHistory:
+        class: org.quartz.plugins.history.LoggingTriggerHistoryPlugin
+
+  # Jackson
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
